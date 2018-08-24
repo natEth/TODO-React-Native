@@ -4,10 +4,12 @@ export const TODO_STORAGE_KEY_PREFIX = "@todo"
 
 export default class Storage {
 
-    static addToDo(data, id= this.guid()) {
+    static addToDo(data) {
       console.debug("Adding todo: "+JSON.stringify(data))  
-      
-	  return AsyncStorage.setItem(`TODO_STORAGE_KEY_PREFIX:${id}`, JSON.stringify(data));
+
+      if(!data.id) data.id= this.guid()
+
+	  return AsyncStorage.setItem(`${TODO_STORAGE_KEY_PREFIX}:${data.id}`, JSON.stringify(data));
 	}
 
     static getToDos(){
@@ -24,14 +26,18 @@ export default class Storage {
                             return
                         }
                         let result = stores.map((result, i, store) => ({key: store[i][0], value: JSON.parse(store[i][1])}))
-                        console.debug(`fetch todos result: ${JSON.stringify(result)} `)
-
+                        
                         resolve(result);
                 });
             });
         })
         
     }
+
+    static clear(){
+        AsyncStorage.clear()
+    }
+
 
     static guid() {
         s4 = () => Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
