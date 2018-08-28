@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, Text, StyleSheet, AsyncStorage, TextInput as NativeTextInput} from 'react-native'
 import {TextInput, Colors, FAB, FABGroup} from 'react-native-paper'
+import {Toolbar, ToolbarContent, ToolbarAction, ToolbarBackAction} from 'react-native-paper'
 
 import Storage from './Storage'
 
@@ -8,19 +9,25 @@ const INITIAL_STATE = {}
 
 export default class TODOForm extends React.Component {
 
-    static title = "Create TODO"
-    
     state = INITIAL_STATE
+
+    static navigationOptions = ({navigation}) => {
+        console.log(`nav state ${JSON.stringify(navigation.state)}`)
+        return {
+            header: (
+              <Toolbar>
+                <ToolbarBackAction onPress={() => navigation.goBack()} />
+                <ToolbarContent title={navigation.getParam('title', 'TODO')} />
+              </Toolbar>
+            )
+        };
+    }
 
     constructor(props){
         super(props)
-
-       const { navigation } = this.props;
-
-        console.log('Constructor called....')
-        console.log(`params ${navigation.getParam('todo', {})}.`)
-        const todo = navigation.getParam('todo', {title: '', text: ''}) 
-        console.log(`params ${JSON.stringify(todo)}.`)
+        
+       const todo = this.props.navigation.getParam('todo', {title: '', text: ''}) 
+         
         this.state = {
             id: todo.key,
             ...todo.value

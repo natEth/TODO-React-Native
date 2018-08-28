@@ -1,15 +1,30 @@
-import React from 'react';
-import { View, Text } from 'react-native';
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
-import RootNavigator from './src/RootNavigator'
+
 import TODOList from './src/TODOList'
-import Storage from './src/Storage'
+import TODOForm from './src/TODOForm'
 
-
-const App = createDrawerNavigator(
-  { Home:  RootNavigator }
+const App = createStackNavigator(
+  {
+    home: { screen: TODOList },
+    TODOForm: {screen: TODOForm}
+  }
 );
 
+// const App = createDrawerNavigator(
+//   {
+//     home: { screen: TODOList },
+//     TODOForm: {screen: TODOForm}
+//   }
+// );
+
+// const App = createDrawerNavigator(
+//   { 'ALL':  TODOList },
+//   { 'DONE': TODOList},
+//   { 'TODO':  TODOList}
+// );
+
+
+//import Storage from './src/Storage'
 //Storage.clear()
 
 export default App;
